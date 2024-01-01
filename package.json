@@ -1,7 +1,7 @@
 {
   "name": "xiaoyoubang-auto-review",
   "private": true,
-  "version": "1.0",
+  "version": "1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",

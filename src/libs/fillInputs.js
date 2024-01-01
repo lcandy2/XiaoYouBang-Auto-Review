@@ -1,10 +1,7 @@
 const fillInputs = (inputElement, data) => {
-    const event = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-    });
-
     inputElement.focus();
+
+    inputElement.value = '';
 
     data.split('').forEach(char => {
         // 创建键盘事件

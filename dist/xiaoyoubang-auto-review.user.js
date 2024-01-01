@@ -33,11 +33,8 @@
     // 评价页面的 href，无特殊情况不需要修改
   };
   const fillInputs = (inputElement, data) => {
-    new Event("input", {
-      bubbles: true,
-      cancelable: true
-    });
     inputElement.focus();
+    inputElement.value = "";
     data.split("").forEach((char) => {
       let keydownEvent = new KeyboardEvent("keydown", { key: char, bubbles: true });
       let keyupEvent = new KeyboardEvent("keyup", { key: char, bubbles: true });
@@ -136,26 +133,29 @@
       return;
     addReviewButton(executeReview);
   };
-  $(async () => {
-    main();
-    watchUrlChange((newUrl) => {
-      console.log("URL 变化了:", newUrl);
-      const observer = new MutationObserver((mutations) => {
-        for (let mutation of mutations) {
-          if (mutation.addedNodes.length) {
-            const $topContent = $("div.contentItem div.topContent");
-            if ($topContent.length) {
-              observer.disconnect();
-              main();
-              break;
-            }
+  const observer = (func) => {
+    const observer2 = new MutationObserver((mutations) => {
+      for (let mutation of mutations) {
+        if (mutation.addedNodes.length) {
+          const $topContent = $("div.contentItem div.topContent");
+          if ($topContent.length) {
+            observer2.disconnect();
+            func();
+            break;
           }
         }
-      });
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
+      }
+    });
+    observer2.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  };
+  $(async () => {
+    observer(main);
+    watchUrlChange((newUrl) => {
+      console.log("URL 变化了:", newUrl);
+      observer(main);
     });
   });
 

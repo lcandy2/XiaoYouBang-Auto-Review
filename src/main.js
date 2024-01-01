@@ -20,27 +20,31 @@ const main = () => {
     addReviewButton(executeReview);
 };
 
+const observer = (func) => {
+    const observer = new MutationObserver(mutations => {
+        for (let mutation of mutations) {
+            if (mutation.addedNodes.length) {
+                const $topContent = $('div.contentItem div.topContent');
+                if ($topContent.length) {
+                    observer.disconnect();
+                    func();
+                    break; // 找到目标元素后立即跳出循环
+                }
+            }
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
 $(async () => {
-    main();
+    observer(main);
     watchUrlChange((newUrl) => {
         console.log('URL 变化了:', newUrl);
         // 重新执行 main 函数
-        const observer = new MutationObserver(mutations => {
-            for (let mutation of mutations) {
-                if (mutation.addedNodes.length) {
-                    const $topContent = $('div.contentItem div.topContent');
-                    if ($topContent.length) {
-                        observer.disconnect();
-                        main();
-                        break; // 找到目标元素后立即跳出循环
-                    }
-                }
-            }
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+        observer(main);
     });
 });
