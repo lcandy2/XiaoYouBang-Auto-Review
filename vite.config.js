@@ -19,7 +19,7 @@ export default defineConfig({
         icon: 'https://www.xybsyw.com/favicon.ico',
         author: 'lcandy2',
         namespace: 'https://github.com/lcandy2/XiaoYouBang-Auto-Review',
-        match: ['*://www.xybsyw.com/personal/*'],
+        match: ['*://*.xybsyw.com/personal/*'],
         "run-at": 'document-start',
         license: 'MIT',
       },
