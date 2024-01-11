@@ -25,7 +25,7 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          jquery: cdn.jsdelivr('jQuery', 'dist/jquery.min.js'),
+          jquery: cdn.npmmirror('jQuery', 'dist/jquery.min.js'),
         },
       },
     }),
